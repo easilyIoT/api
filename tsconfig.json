@@ -3,7 +3,9 @@
     "incremental": false,                   /* Enable incremental compilation */
     "target": "es2017",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
     "module": "commonjs",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-    "lib": ["ESNext"],                             /* Specify library files to be included in the compilation. */
+    "lib": ["ESNext", "DOM", "ES6", "ES5"],                             /* Specify library files to be included in the compilation. */
+    "types": ["jest", "node"],
+    "typeRoots": ["node_modules/@types"],
     "declaration": true,                   /* Generates corresponding '.d.ts' file. */
     "sourceMap": true,                     /* Generates corresponding '.map' file. */
     "outDir": "./dist",                        /* Redirect output structure to the directory. */
@@ -14,6 +16,6 @@
     "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
     "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   },
-  "include": ["src/**/*", "__test__"],
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

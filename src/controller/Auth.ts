@@ -22,7 +22,7 @@ export const register = async (req: Request, res: Response) => {
 
                 await newUser.save();
 
-                res.status(200).json();
+                res.status(201).json();
         } catch (e) {
                 console.log(e);
                 res.status(400).json({

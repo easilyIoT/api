@@ -81,7 +81,7 @@ export const token = async (req: Request, res: Response) => {
         }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const grant = async (req: Request, res: Response) => {
         try {
                 const { client_id, response_type } = req.body;
                 const user: any = req.user;
