@@ -13,7 +13,7 @@ router.route("/token")
         .get(Controllers.token)
         .post(Controllers.token);
 
-router.post("/login", passport.authenticate('jwt', { session: false }), Controllers.login);
+router.post("/login", passport.authenticate('jwt', { session: false }), Controllers.grant);
 
 router.use("/client", passport.authenticate('jwt', { session: false }));
 router.route("/client")
