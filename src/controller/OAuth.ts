@@ -84,9 +84,11 @@ export const token = async (req: Request, res: Response) => {
 export const grant = async (req: Request, res: Response) => {
         try {
                 const { client_id, response_type } = req.body;
-                const user: any = req.user;
+                const user = req.user as User;
                 const client = await ClientModel.findOne({ client_id });
 
+                console.log(req.body);
+                
                 if (!client)
                         return res.status(400).json({
                                 error: "ClientID not found"
