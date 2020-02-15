@@ -1,5 +1,5 @@
 Arguments: 
-  /home/user/.nvm/versions/node/v12.16.0/bin/node /mnt/c/Users/famiglia/Desktop/WEB/CASA/api/.yarn/releases/yarn-1.22.0.js add -D cross-env
+  /home/user/.nvm/versions/node/v12.16.0/bin/node /mnt/c/Users/famiglia/Desktop/WEB/CASA/api/.yarn/releases/yarn-1.22.0.js add cross-env -D
 
 PATH: 
   /home/user/.nvm/versions/node/v12.16.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/bin:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/libnvvp:/mnt/c/Program Files (x86)/iis express/PHP/v7.1:/mnt/c/Program Files/ImageMagick-7.0.8-Q16:/mnt/c/Program Files (x86)/Intel/iCLS Client/:/mnt/c/Program Files/Intel/iCLS Client/:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/WiFi/bin/:/mnt/c/Program Files/Common Files/Intel/WirelessCommon/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/TDM-GCC-64/bin:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files (x86)/IncrediBuild:/mnt/c/Users/famiglia/AppData/Local/Programs/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Users/famiglia/AppData/Roaming/nvm:/mnt/c/Program Files/nodejs:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin:/mnt/c/Program Files/Java/jdk1.8.0_221/bin:/mnt/d/DEV/ANDROID/tools:/mnt/d/DEV/ANDROID/emulator:/mnt/d/DEV/ANDROID:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/OpenSSL/bin:/mnt/c/flutter/bin:/mnt/c/Users/famiglia/AppData/Roaming/npm:/mnt/c/Program Files/Java/bin:/mnt/c/Users/famiglia/Desktop/WEB/.bin:/mnt/c/Users/famiglia/AppData/Local/Programs/Python/Python36/Scripts:/mnt/c/Users/famiglia/AppData/Local/Programs/Python/Python36:/mnt/c/Program Files/NVIDIA Corporation/Nsight Compute 2019.5.0/:/mnt/d/DEV/Go/bin:/mnt/c/Program Files/OpenJDK/jdk-13.0.1/bin:/mnt/c/Program Files/influxdb-1.7.9-1:/mnt/c/Program Files (x86)/Yarn/bin/:/mnt/c/Users/famiglia/.cargo/bin:/mnt/c/Program Files/MySQL/MySQL Shell 8.0/bin/:/mnt/c/Users/famiglia/AppData/Local/hyper/app-3.0.2/resources/bin:/mnt/c/Users/famiglia/.dotnet/tools:/mnt/c/Users/famiglia/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/Docker Toolbox:/mnt/c/Users/famiglia/go/bin:/mnt/c/Program Files/heroku/bin:/mnt/c/Users/famiglia/AppData/Local/Yarn/bin:/snap/bin
@@ -14,7 +14,7 @@ Platform:
   linux x64
 
 Trace: 
-  Error: ENOENT: no such file or directory, copyfile '/home/user/.cache/yarn/v6/npm-@cnakazawa-watch-1.0.4-f864ae85004d0fcab6f50be9141c4da368d1656a-integrity/node_modules/@cnakazawa/watch/cli.js' -> '/mnt/c/Users/famiglia/Desktop/WEB/CASA/api/node_modules/@cnakazawa/watch/cli.js'
+  Error: ENOENT: no such file or directory, copyfile '/home/user/.cache/yarn/v6/npm-is-ci-2.0.0-6bc6334181810e04b5c22b3d589fdca55026404c-integrity/node_modules/is-ci/bin.js' -> '/mnt/c/Users/famiglia/Desktop/WEB/CASA/api/node_modules/is-ci/bin.js'
 
 npm manifest: 
   {
@@ -23,12 +23,12 @@ npm manifest:
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-      "start": "NODE_ENV=PRODUCTION node dist/index.js",
-      "dev": "NODE_ENV=DEV npx nodemon src/index.ts",
-      "build": "npx tsc",
-      "test": "NODE_ENV=TEST jest -c jest.config.js --runInBand --detectOpenHandles --silent",
-      "test:watch": "NODE_ENV=TEST jest -c jest.config.js --watch --runInBand --detectOpenHandles --silent",
-      "commit": "npx git-cz"
+      "start": "cross-env NODE_ENV=PRODUCTION node dist/index.js",
+      "dev": "cross-env NODE_ENV=DEV npx nodemon src/index.ts",
+      "build": "cross-env tsc",
+      "test": "cross-env NODE_ENV=TEST jest -c jest.config.js --runInBand --detectOpenHandles --silent",
+      "test:watch": "cross-env NODE_ENV=TEST jest -c jest.config.js --watch --runInBand --detectOpenHandles --silent",
+      "commit": "cross-env git-cz"
     },
     "dependencies": {
       "@types/morgan": "^1.7.37",
