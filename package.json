@@ -12,7 +12,6 @@
     "commit": "cross-env git-cz"
   },
   "dependencies": {
-    "@types/morgan": "^1.7.37",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -28,9 +27,11 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "secure-random": "^1.1.2",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "cross-env": "^7.0.0"
   },
   "devDependencies": {
+    "@types/morgan": "^1.7.37",
     "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.19.0",
     "@types/cors": "^2.8.6",
@@ -46,7 +47,6 @@
     "@types/passport-local": "^1.0.33",
     "@types/supertest": "^2.0.8",
     "@types/uuid": "^3.4.7",
-    "cross-env": "^7.0.0",
     "faker": "^4.1.0",
     "git-cz": "^4.3.1",
     "jest": "^25.1.0",
