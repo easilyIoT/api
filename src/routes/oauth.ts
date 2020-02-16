@@ -10,10 +10,9 @@ const router: Router = Router();
 
 router.get("/auth", Controllers.auth);
 router.route("/token")
-        .get(Controllers.token)
         .post(Controllers.token);
 
-router.post("/login", passport.authenticate('jwt', { session: false }), Controllers.grant);
+router.post("/login", passport.authenticate('jwt', { session: false }), Controllers.generateCode);
 
 router.use("/client", passport.authenticate('jwt', { session: false }));
 router.route("/client")
