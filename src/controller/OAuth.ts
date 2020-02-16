@@ -1,18 +1,17 @@
 import url from "url"
 import mongoose from "mongoose"
 import uuid from "uuid/v1"
-import { Request, Response } from "express"
+import { Request, Response, NextFunction } from "express"
 
 import UserModel from "../models/user";
 import CodeModel from "../models/code";
 import ClientModel from "../models/client";
 import RefreshTokenModel from "../models/refresh_token";
 
-import { signToken, toHexString } from "../helpers"
+import { signToken } from "../helpers"
 import { SecureRandom } from '../helpers/SecureRandom';
 
-import { User, Client, Code } from "../types"
-
+import { User, Client } from "../types"
 
 
 
@@ -25,7 +24,7 @@ export const auth = (req: Request, res: Response) => {
         }));
 };
 
-export const token = async (req: Request, res: Response) => {
+export const authorization_code_grant = async (req: Request, res: Response) => {
                 
         try {
 
@@ -71,7 +70,7 @@ export const token = async (req: Request, res: Response) => {
                         refresh_token: refresh_token._id,
                         token_type: "Bearer",
                         expires_in,
-                        "scope": "device:read"
+                        "scope": "device:all"
                 });
 
         } catch (e) {
@@ -79,6 +78,56 @@ export const token = async (req: Request, res: Response) => {
                 res.status(500).json({
                         error: e.message
                 })
+        }
+};
+
+
+export const refresh_token_grant = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+        
+        const grant_type = req.body.grant_type;
+
+        if (grant_type !== "refresh_token")
+                next()
+        
+        
+        const refresh_token_id = req.body.refresh_token;
+
+        if (!refresh_token_id)
+                return res.send(400).json({
+                        error: true,
+                        messagge: "refresh_token not found"
+                });
+
+        try {
+                const refresh_token = await RefreshTokenModel.findById(refresh_token_id);
+
+                if (!refresh_token)
+                        res.send(400).json({
+                                error: true,
+                                messagge: "refresh_token not found"
+                        });
+                else {
+                        const user = await UserModel.findById(refresh_token.user);
+                        
+                        if (!user) 
+                                res.send(400).json({
+                                        error: true,
+                                        messagge: "user not found"
+                                })
+                        else 
+                                return {
+                                        access_token: signToken(user, 360),
+                                        token_type: "Bearer",
+                                        expires_in: 360,
+                                        refresh_token: refresh_token_id,
+                                        "scope": "device:all"
+                                }
+                }
+        } catch (e) {
+                return res.send(500).json({
+                        error: true,
+                        messagge: e.messagge
+                });
         }
 };
 
@@ -112,6 +161,9 @@ export const generateCode = async (req: Request, res: Response) => {
                 })
         }
 };
+
+
+// CRUD on client
 
 export const getClients = async (req: Request, res: Response) => {
 
