@@ -1,13 +1,13 @@
 
-import "../env";
+import "../src/env";
 
 import supertest, { SuperTest, Test } from "supertest"
 import { connect } from "mongoose"
 
-import { DB_URL, MQTT_BROKER_URL } from "../config"
+import { DB_URL, MQTT_BROKER_URL } from "../src/config"
 
-import app from "../app"
-import initMQTT from "../mqtt"
+import app from "../src/app"
+import initMQTT from "../src/mqtt"
 
 console.warn = () => null;
 test("Server run", () => {

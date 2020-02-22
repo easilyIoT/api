@@ -4,16 +4,13 @@ import { Mockgoose } from "mock-mongoose"
 import supertest from "supertest"
 import faker from "faker"
 
-import app from '../../app';
+import app from '../../src/app';
 
-import UserModel from "../../models/user"
-import { token } from '../../controller/OAuth';
+import UserModel from "../../src/models/user"
+
 
 const request = supertest(app);
-
 const mockgoose = new Mockgoose(mongoose);
-
-
 const mockUser = {
         email: faker.internet.email(),
         password: faker.internet.password()

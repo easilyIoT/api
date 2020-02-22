@@ -4,9 +4,9 @@ import { Mockgoose } from "mock-mongoose";
 import supertest from "supertest";
 import faker from "faker";
 
-import app from '../../app';
+import app from '../../src/app';
 
-import UserModel from "../../models/user";
+import UserModel from "../../src/models/user";
 
 
 const request = supertest(app);
