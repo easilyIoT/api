@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { MqttClient } from 'mqtt';
 
-import RefreshToken from "../models/refresh_token"
-import User from "../models/user";
-import { signToken } from "../helpers"
-
 
 export const headerLogger = (req: Request, res: Response, next: NextFunction) => {
         console.log(req.headers),
@@ -12,7 +8,7 @@ export const headerLogger = (req: Request, res: Response, next: NextFunction) =>
 };
 
 export const bodyLogger = (req: Request, res: Response, next: NextFunction) => {
-        console.log(req.body),
+        console.log("Body of", req.path, "=>", req.body),
                 next();
 };
 

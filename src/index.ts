@@ -1,6 +1,6 @@
 import "./env"
+require("util").inspect.defaultOptions.depth = null;
 
-import { connect } from "mongoose"
 
 import app from "./app"
 import initMqtt from "./mqtt"
@@ -8,6 +8,7 @@ import initDBConnection from "./db"
 
 import { MQTT_BROKER_URL, DB_URL } from "./config"
 import { injectMQTT } from './middlewares/index';
+
 
 const main = async () => {
         console.log("Initilizing SERVER")
