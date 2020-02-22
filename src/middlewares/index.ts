@@ -17,20 +17,19 @@ export const bodyLogger = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const responseLogger = (req: Request, res: Response, next: NextFunction) => {
-        const oldWrite = res.write,
+        const oldJson = res.json,
                 oldEnd = res.end;
 
-        const chunks: Buffer[] = [];
+        let body: Object = {};
 
-        res.write = function (chunk: any): boolean {
-                chunks.push(new Buffer(chunk));
+        res.json = function (obj: Object) {
+                body = obj;
 
-                return oldWrite.apply(res, arguments as any);
+                return oldJson.apply(res, arguments as any);
         };
 
         res.end = function () {
 
-                const body = Buffer.concat(chunks).toString('utf8');
                 console.log("Response from", req.path, "=>", body);
 
                 oldEnd.apply(res, arguments as any);
