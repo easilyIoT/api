@@ -12,7 +12,7 @@ export const headerLoggers = (req: Request, res: Response, next: NextFunction) =
 };
 
 
-export const enqueueMQTT = (client: MqttClient) => (req: Request, res: Response, next: NextFunction) => {
+export const injectMQTT = (client: MqttClient) => (req: Request, res: Response, next: NextFunction) => {
         req.mqtt = client;
         next();
 };

@@ -7,9 +7,9 @@ import initMqtt from "./mqtt"
 import initDBConnection from "./db"
 
 import { MQTT_BROKER_URL, DB_URL } from "./config"
-import { enqueueMQTT } from './middlewares/index';
+import { injectMQTT } from './middlewares/index';
 
-(async () => {
+const main = async () => {
         console.log("Initilizing SERVER")
         const port = process.env.PORT || 8000;
 
@@ -18,7 +18,7 @@ import { enqueueMQTT } from './middlewares/index';
                         clientId: "Central Node"
                 });
 
-                app.use(enqueueMQTT(client));
+                app.use(injectMQTT(client));
 
                 console.log("MQTT initialized");
 
@@ -37,4 +37,6 @@ import { enqueueMQTT } from './middlewares/index';
 
         app.listen(port, () => console.log("Server Online at port " + port));
 
-})()
+};
+
+main();

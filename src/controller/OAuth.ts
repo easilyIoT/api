@@ -1,5 +1,4 @@
 import url from "url"
-import mongoose from "mongoose"
 import uuid from "uuid/v1"
 import { Request, Response, NextFunction } from "express"
 
@@ -115,13 +114,13 @@ export const refresh_token_grant = async (req: Request, res: Response, next: Nex
                                         messagge: "user not found"
                                 })
                         else 
-                                return {
+                                res.status(200).json({
                                         access_token: signToken(user, 360),
                                         token_type: "Bearer",
                                         expires_in: 360,
                                         refresh_token: refresh_token_id,
                                         "scope": "device:all"
-                                }
+                                });
                 }
         } catch (e) {
                 return res.send(500).json({
