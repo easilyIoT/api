@@ -86,7 +86,7 @@ export const refresh_token_grant = async (req: Request, res: Response, next: Nex
         const grant_type = req.body.grant_type;
 
         if (grant_type !== "refresh_token")
-                next()
+                return next();
         
         
         const refresh_token_id = req.body.refresh_token;
@@ -118,8 +118,7 @@ export const refresh_token_grant = async (req: Request, res: Response, next: Nex
                                         access_token: signToken(user, 360),
                                         token_type: "Bearer",
                                         expires_in: 360,
-                                        refresh_token: refresh_token_id,
-                                        "scope": "device:all"
+                                        refresh_token: refresh_token_id
                                 });
                 }
         } catch (e) {

@@ -2,10 +2,7 @@ import { sign } from "jsonwebtoken"
 
 import { User, DeviceTypes } from '../types';
 
-/**
- * @param user User object from db query
- * @param expires_in number of seconds of token lifetime
- */
+
 export const signToken = (user: User, expires_in: number = 0): string => {
         const obj = {
                 sub: user._id,
@@ -15,7 +12,7 @@ export const signToken = (user: User, expires_in: number = 0): string => {
         };
 
 
-        return sign(obj, process.env.JWT_SECRET || "nigga")
+        return sign(obj, process.env.JWT_SECRET || "secret")
 };
 
 export const toHexString = (byteArray: any) => {

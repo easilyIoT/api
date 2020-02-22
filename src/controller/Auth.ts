@@ -10,7 +10,7 @@ export const register = async (req: Request, res: Response) => {
 
                 const emailAlreadyExist = await UserModel.findOne({ email });
                 if (emailAlreadyExist)
-                        return res.status(400).json({
+                        return res.sendStatus(400).json({
                                 message: "Email already exists"
                         })
 
@@ -22,17 +22,17 @@ export const register = async (req: Request, res: Response) => {
 
                 await newUser.save();
 
-                res.status(201).json();
+                res.sendStatus(201).json();
         } catch (e) {
                 console.log(e);
-                res.status(400).json({
+                res.sendStatus(400).json({
                         message: e.message
                 });
         }
 };
 export const login = (req: Request, res: Response) => {
 
-        res.status(200).json({
+        res.sendStatus(200).json({
                 token: signToken(req.user as any, 36000)
         })
 };
