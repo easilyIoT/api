@@ -10,7 +10,7 @@ const router: Router = Router();
 
 router.get("/auth", Controllers.auth);
 router.route("/token")
-        .post(Controllers.refresh_token_grant, Controllers.authorization_code_grant);
+        .post(Middlewares.bodyLogger, Controllers.refresh_token_grant, Controllers.authorization_code_grant);
 
 router.post("/login", passport.authenticate('jwt', { session: false }), Controllers.generateCode);
 

@@ -8,8 +8,10 @@ import express, { Application } from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import routes from "./routes";
 
+import routes from "./routes";
+import * as Middlewares from "./middlewares"
+import { responseLogger } from './middlewares/index';
 
 const app: Application = express();
 
@@ -23,7 +25,7 @@ app.use(cors({
         origin: true
 }));
 
+app.use(Middlewares.responseLogger);
 app.use(routes);
-
 
 export default app;
