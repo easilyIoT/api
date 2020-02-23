@@ -13,8 +13,9 @@ export const bodyLogger = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const responseLogger = (req: Request, res: Response, next: NextFunction) => {
-        const oldJson = res.json,
-                oldEnd = res.end;
+        const oldJson = res.json;
+        const oldSend = res.send;
+        const oldEnd = res.end;
 
         let body: Object = {};
 
@@ -24,6 +25,11 @@ export const responseLogger = (req: Request, res: Response, next: NextFunction) 
                 return oldJson.apply(res, arguments as any);
         };
 
+        res.send = function (text: string) {
+                body = text;
+
+                return oldSend.apply(res, arguments as any);
+        }
         res.end = function () {
 
                 console.log("Response from", req.path, "=>", body);

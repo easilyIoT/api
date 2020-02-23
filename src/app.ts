@@ -11,7 +11,6 @@ import cors from 'cors';
 
 import routes from "./routes";
 import * as Middlewares from "./middlewares"
-import { responseLogger } from './middlewares/index';
 
 const app: Application = express();
 

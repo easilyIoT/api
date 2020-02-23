@@ -31,7 +31,6 @@ export const authorization_code_grant = async (req: Request, res: Response) => {
 
                 const code = await CodeModel.findById(codeId);
                 
-                console.log(req.body);
                         
                 if (!code)
                         return res.status(400).json({
@@ -73,7 +72,6 @@ export const authorization_code_grant = async (req: Request, res: Response) => {
                 });
 
         } catch (e) {
-                console.log(e)
                 res.status(500).json({
                         error: e.message
                 })

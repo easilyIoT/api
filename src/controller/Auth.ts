@@ -24,7 +24,6 @@ export const register = async (req: Request, res: Response) => {
 
                 res.sendStatus(201).json();
         } catch (e) {
-                console.log(e);
                 res.sendStatus(400).json({
                         message: e.message
                 });

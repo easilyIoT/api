@@ -40,6 +40,7 @@ describe("Register", () => {
                                 .set('Accept', 'application/json')
                                 .send(mockUser)
                                 .expect(201)
+                                .timeout(1000)
                                 .end(async (err, res) => {
 
                                         if (err) return done(err);
@@ -61,6 +62,7 @@ describe("Register", () => {
                         await request.post("/auth/register")
                                 .set('Accept', 'application/json')
                                 .send(mockUser)
+                                .timeout(1000)
                                 .expect(400);
                 
                 } catch (e) {
