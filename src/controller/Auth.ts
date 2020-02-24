@@ -22,16 +22,16 @@ export const register = async (req: Request, res: Response) => {
 
                 await newUser.save();
 
-                res.sendStatus(201).json();
+                res.status(201).json();
         } catch (e) {
-                res.sendStatus(400).json({
+                res.status(400).json({
                         message: e.message
                 });
         }
 };
 export const login = (req: Request, res: Response) => {
 
-        res.sendStatus(200).json({
+        res.status(200).json({
                 token: signToken(req.user as any, 36000)
         })
 };
