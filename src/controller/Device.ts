@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 
 import DeviceModel from "../models/device"
-import { Device, User, DeviceTypes } from '../types';
-import { actionFromType } from "../helpers";
+
+import deviceData, { isRead, isAction, getImplementedTypes } from "../devices";
+
+import { Device, User, DeviceType, DeviceAction } from '../types';
 
 export const getAllDevices = async (req: Request, res: Response) => {
         const user: User = req.user as User;
@@ -25,7 +27,7 @@ export const createDevice = async (req: Request, res: Response) => {
         
         const user: User = req.user as User;
         
-        const type: DeviceTypes = req.body.type;
+        const type: DeviceType = req.body.type;
         const name: string = req.body.name;
 
         if (!type) 
@@ -51,16 +53,23 @@ export const createDevice = async (req: Request, res: Response) => {
                                 message: "Name already exists"
                         })
                 
-                const actions: string[] = actionFromType(type);
-                // actions.forEach(action => req.mqtt.subscribe(`/${name}${action}`));
+                
+                const deviceTypeDatos = deviceData.get(type);
 
-                const device: Device = new DeviceModel({ name, type, owner: user._id, actions, state: "default" });
+                if (!deviceTypeDatos)
+                        return res.status(400).json({
+                                error: true,
+                                messagge: "Device Type not found"
+                        })
+                
+                deviceTypeDatos.reads.forEach(read => req.mqtt.subscribe(`/${device._id}/${read}`));
+                
+                const device: Device = new DeviceModel({ name, type, owner: user._id, actions: deviceTypeDatos.actions, reads: deviceTypeDatos.reads, status: "none" });
 
                 await device.save();
 
 
                 res.status(201).json();
-
 
         } catch (e) {
                 res.status(500).json({
@@ -139,7 +148,15 @@ export const deleteDevice = async (req: Request, res: Response) => {
                 
                 await device.remove();
                 
-                //device.actions.forEach(action => req.mqtt.unsubscribe(`/${device.name}${action}`));
+                const deviceTypeDatos = deviceData.get(device.type);
+
+                if (!deviceTypeDatos)
+                        return res.status(500).json({
+                                error: true,
+                                messagge: "Device Type not found"
+                        })
+                
+                deviceTypeDatos.reads.forEach(read => req.mqtt.unsubscribe(`/${device._id}/${read}`));
 
                 res.status(200).json({});
 
@@ -151,11 +168,29 @@ export const deleteDevice = async (req: Request, res: Response) => {
         }
 };
 
+export const getTypes = async (req: Request, res: Response) => {
+        const user: User = req.user as User;
+        try {
+                const definedTypes: DeviceType[] = getImplementedTypes();
+
+                res.status(200).json({
+                        types: definedTypes
+                });
+
+        } catch (e) {
+
+                res.status(500).json({
+                        error: true,
+                        message: e
+                })
+        }
+};
+
 export const triggerAction = async (req: Request, res: Response) => {
         const user: User = req.user as User;
 
         const deviceID: string = req.params.id;
-        const actionName: string = req.params.action;
+        const actionName: DeviceAction = req.params.action as DeviceAction;
 
         if (!deviceID || deviceID === undefined)
                 return res.status(400).json({
@@ -163,6 +198,11 @@ export const triggerAction = async (req: Request, res: Response) => {
                         message: "deviceID is missing"
                 })
         
+        if (!isAction(actionName))
+                return res.status(400).json({
+                        error: true,
+                        message: "Action not found"
+                })
         try {
                 
                 const device: Device | null = await DeviceModel.findById(deviceID);
@@ -173,13 +213,16 @@ export const triggerAction = async (req: Request, res: Response) => {
                                 message: "Device not found"
                         })
                 
-                if (!device.actions.includes(actionName))
+                if (!deviceData.get(device.type)?.actions.includes(actionName))
                         return res.status(400).json({
                                 error: true,
-                                message: "Action supported from this device"
-                        })
+                                messagge: "Actions not supported from this device type"
+                        });
+
                 
                 req.mqtt.publish(`/${device._id}/${actionName}`, "1");
+                
+                // Soluzione temporanea ⚠
                 device.state = actionName + "ed";
 
                 await device.save();
@@ -193,3 +236,4 @@ export const triggerAction = async (req: Request, res: Response) => {
                 })
         }
 }
+

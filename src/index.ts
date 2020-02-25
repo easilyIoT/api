@@ -1,8 +1,9 @@
 import "./env"
 require("util").inspect.defaultOptions.depth = null;
 
+import express, { Application } from "express";
 
-import app from "./app"
+import server from "./app"
 import initMqtt from "./mqtt"
 import initDBConnection from "./db"
 
@@ -11,7 +12,9 @@ import { injectMQTT } from './middlewares/index';
 
 
 const main = async () => {
-        console.log("Initilizing SERVER")
+        console.log("Initilizing SERVER");
+
+        const app: Application = express();
         const port = process.env.PORT || 8000;
 
         try {
@@ -21,22 +24,23 @@ const main = async () => {
 
                 app.use(injectMQTT(client));
 
-                console.log("MQTT initialized");
+                console.log("MQTT initialized ✅");
 
         } catch (e) {
-                console.error("Failed connection with MQTT Broker");
+                console.error("Failed connection with MQTT Broker ⛔");
                 process.exit(1);
         }
 
         try {
                 await initDBConnection;
-                console.log("MONGODB connection initialized");
+                console.log("MONGODB connection initialized ✅");
         } catch (e) {
-                console.error("Failed connection with DB")
+                console.error("Failed connection with DB ⛔")
                 process.exit(1);
         }
 
-        app.listen(port, () => console.log("Server Online at port " + port));
+        app.use(server);
+        app.listen(port, () => console.log(`Server Online at port ${port} 🚀`));
 
 };
 

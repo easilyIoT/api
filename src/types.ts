@@ -27,30 +27,35 @@ export interface RefreshToken extends Document {
         user: string
 }
 
-export type DeviceTypes = "LockController";
+export type DeviceType = "LockController" | "TemperatureSensor";
+
+export type DeviceAction = "lock" | "unlock";
+export type DeviceRead = "health" | "temperature";
 
 export interface Device extends Document {
-        type: DeviceTypes,
+        type: DeviceType,
         name: string,
         owner: string,
-        actions: string[],
+        actions: DeviceAction,
+        reads: DeviceRead
         state: string
 }
 
-process.env
+
 declare global {
         namespace Express {
                 interface Request {
                         mqtt: MqttClient,
                 }
         }
-        namespace Node {
+        namespace NodeJS {
                 interface ProcessEnv {
                         DB_USER: string | undefined,
                         DB_PASSWORD: string | undefined,
                         JWT_SECRET: string | undefined,
                         MQTT_USER: string | undefined,
-                        MQTT_PASSWORD: string | undefined
+                        MQTT_PASSWORD: string | undefined,
+                        NODE_ENV: "PRODUCTION" | "DEV" | "TEST"
+                }
         }
-}
 }

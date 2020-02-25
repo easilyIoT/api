@@ -1,4 +1,7 @@
 import { Schema, model } from 'mongoose';
+
+import deviceData, { getImplementedTypes } from "../devices" 
+
 import { Device } from '../types';
 
 
@@ -6,7 +9,7 @@ const deviceSchema = new Schema({
         type: {
                 type: String,
                 required: true,
-                enum: ["LockController"]
+                enum: getImplementedTypes()
         },
         name: {
                 type: String,
@@ -17,6 +20,10 @@ const deviceSchema = new Schema({
                 required: true
         },
         actions: {
+                type: [String],
+                required: true
+        },
+        reads: {
                 type: [String],
                 required: true
         },

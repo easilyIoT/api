@@ -32,7 +32,7 @@ export const responseLogger = (req: Request, res: Response, next: NextFunction) 
         }
         res.end = function () {
 
-                console.log("Response from", req.path, "=>", body);
+                console.log("Response from", req.url, "=>", body);
 
                 oldEnd.apply(res, arguments as any);
         };
