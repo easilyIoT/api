@@ -107,7 +107,6 @@ export default (url: string, options: IClientOptions = {}): Promise<{ client: Mq
                                 if (readType === "health") {
                                         const data = deviceHealthStatus.get(deviceID);
 
-                                        //getKeysOfMap<string>(deviceHealthStatus).forEach(k => console.log(k));
 
                                         if (!data)
                                                 return console.error(`⛔  ${topic} error on parsing`);
