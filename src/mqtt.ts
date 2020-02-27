@@ -22,6 +22,10 @@ export class HealthStatus {
                 this.timer = setTimeout(this.fn.bind(this), 5000);
         }
 
+        public stop(): void {
+                clearTimeout(this.timer);
+        }
+
         public set status(value: boolean) {
                 this._status = value;
         }

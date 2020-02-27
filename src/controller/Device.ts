@@ -171,6 +171,8 @@ export const deleteDevice = async (req: Request, res: Response) => {
                                 message: "Device Type not found"
                         })
                 
+                req.deviceHealth.get(device._id)?.stop();
+                req.deviceHealth.delete(device._id);
                 deviceTypeDatos.reads.forEach(read => req.mqtt.unsubscribe(`/${device._id}/${read}`));
 
                 res.status(200).json({});
