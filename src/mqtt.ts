@@ -3,7 +3,7 @@ import { MqttClient, connect, IClientOptions } from "mqtt"
 import DeviceModel from "./models/device"
 import DeviceData, { DeviceDataStorage, isRead } from "./devices"
 
-import { getKeysOfMap } from "./helpers"
+import { getKeysOfMap, isFloat } from "./helpers"
 
 import { MQTT_BROKER_URL } from './config/index';
 
@@ -48,13 +48,13 @@ export class HealthStatus {
                                 device.isOnline = false;
 
                                 await device.save();
-                                
+
                                 this._status = false;
                         } catch (e) {
                                 console.error(e.stack);
                         }
                 }
-                                
+
                 this.reset();
         }
 
@@ -107,33 +107,56 @@ export default (url: string, options: IClientOptions = {}): Promise<{ client: Mq
                                 const readType: DeviceRead = readToBeVerified as DeviceRead;
 
 
+                                switch (readType) {
+                                        case "health": {
+                                                const data = deviceHealthStatus.get(deviceID);
 
-                                if (readType === "health") {
-                                        const data = deviceHealthStatus.get(deviceID);
 
+                                                if (!data)
+                                                        return console.error(`⛔  ${topic} error on parsing`);
 
-                                        if (!data)
-                                                return console.error(`⛔  ${topic} error on parsing`);
+                                                if (!data.status) {
+                                                        data.status = true;
 
-                                        if (!data.status) {
-                                                data.status = true;
+                                                        try {
+                                                                const device = await DeviceModel.findOne({ _id: data.deviceID });
 
+                                                                if (!device)
+                                                                        return console.error(`⛔  id: ${data.deviceID} of Device not found in DB`)
+
+                                                                device.isOnline = true;
+
+                                                                await device.save();
+                                                        } catch (e) {
+                                                                console.error(e.stack);
+                                                        }
+                                                }
+                                                data.reset();
+                                                break;
+                                        }
+                                        case "temperature": {
+                                                if (!isFloat(payload.toString()))
+                                                        return
+                                                
                                                 try {
-                                                        const device = await DeviceModel.findOne({ _id: data.deviceID });
+                                                        const device = await DeviceModel.findOne({ _id: deviceID });
 
                                                         if (!device)
-                                                                return console.error(`⛔  id: ${data.deviceID} of Device not found`)
-
-                                                        device.isOnline = true;
+                                                                return console.error(`⛔  id: ${deviceID} of Device not found in DB`)
+                                                        
+                                                        device.state = payload.toString();
 
                                                         await device.save();
                                                 } catch (e) {
-                                                        console.error(e.stack);
+                                                        console.error(e.stack)
                                                 }
-                                        }
-                                        data.reset();
-                                }
 
+                                                break;
+                                        }
+                                        default: {
+                                                break;
+                                        }
+                                }
                         }
 
 

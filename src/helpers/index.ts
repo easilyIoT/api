@@ -32,3 +32,5 @@ export const getKeysOfMap = function <T>(map: Map<T, any>): T[] {
         
         return res;
 }
+
+export const isFloat = (value: string): boolean => !isNaN(parseFloat(value))
