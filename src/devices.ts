@@ -1,18 +1,21 @@
-import { DeviceAction, DeviceType, DeviceRead } from './types';
+import { DeviceAction, DeviceType, DeviceRead, DeviceCategory } from './types';
 
 export interface DeviceDataStorage {
         actions: DeviceAction[],
-        reads: DeviceRead[]
+        reads: DeviceRead[],
+        category: DeviceCategory[]
 }
 
 const devicesData = new Map<DeviceType, DeviceDataStorage>([
         ["LockController", {
                 actions: ["lock", "unlock"],
-                reads: ["health"]
+                reads: ["health"],
+                category: ["SMARTLOCK"]
         }],
         ["TemperatureSensor", {
                 actions: [],
-                reads: ["health", "temperature"]
+                reads: ["health", "temperature"],
+                category: ["TEMPERATURE_SENSOR"]
         }]
 ]);
 

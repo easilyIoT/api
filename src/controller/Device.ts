@@ -69,6 +69,7 @@ export const createDevice = async (req: Request, res: Response) => {
                         owner: user._id,
                         actions: deviceTypeDatos.actions,
                         reads: deviceTypeDatos.reads,
+                        category: deviceTypeDatos.category,
                         state: "none",
                         isOnline: false
                 });

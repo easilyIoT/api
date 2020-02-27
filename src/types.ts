@@ -33,13 +33,15 @@ export type DeviceType = "LockController" | "TemperatureSensor";
 
 export type DeviceAction = "lock" | "unlock";
 export type DeviceRead = "health" | "temperature";
-
+export type DeviceCategory = "SMARTLOCK" | "THERMOSTAT" | "TEMPERATURE_SENSOR";
+ 
 export interface Device extends Document {
         type: DeviceType,
         name: string,
         owner: string,
-        actions: DeviceAction,
-        reads: DeviceRead
+        actions: DeviceAction[],
+        reads: DeviceRead[],
+        categories: DeviceCategory[],
         state: string,
         isOnline: boolean
 }
