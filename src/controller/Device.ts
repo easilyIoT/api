@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import DeviceModel from "../models/device"
-
+import { HealthStatus } from "../mqtt"
 import deviceData, { isRead, isAction, getImplementedTypes } from "../devices";
 
 import { Device, User, DeviceType, DeviceAction } from '../types';
@@ -74,6 +74,7 @@ export const createDevice = async (req: Request, res: Response) => {
                         isOnline: false
                 });
                 
+                req.deviceHealth.set(String(device._id), new HealthStatus(false, device._id));
                 deviceTypeDatos.reads.forEach(read => req.mqtt.subscribe(`/${device._id}/${read}`));
 
                 await device.save();
