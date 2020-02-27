@@ -8,7 +8,7 @@ import initMqtt from "./mqtt"
 import initDBConnection from "./db"
 
 import { MQTT_BROKER_URL, DB_URL } from "./config"
-import { injectMQTT } from './middlewares/index';
+import { injectMQTT, injectDeviceHealth } from './middlewares';
 
 
 const main = async () => {
@@ -18,27 +18,29 @@ const main = async () => {
         const port = process.env.PORT || 8000;
 
         try {
-                const client = await initMqtt(MQTT_BROKER_URL, {
-                        clientId: "Central Node"
-                });
-
-                app.use(injectMQTT(client));
-
-                console.log("MQTT initialized ✅");
-
+                await initDBConnection;
+                console.log("✅  MONGODB connection initialized");
         } catch (e) {
-                console.error("Failed connection with MQTT Broker ⛔");
+                console.error("⛔  Failed connection with DB")
                 process.exit(1);
         }
 
         try {
-                await initDBConnection;
-                console.log("MONGODB connection initialized ✅");
+                const { client, devices } = await initMqtt(MQTT_BROKER_URL, {
+                        clientId: "Central Node"
+                });
+
+                app.use(injectMQTT(client));
+                app.use(injectDeviceHealth(devices));
+                
+                console.log("✅  MQTT initialized");
+
         } catch (e) {
-                console.error("Failed connection with DB ⛔")
+                console.error("⛔  Failed connection with MQTT Broker");
                 process.exit(1);
         }
 
+       
         app.use(server);
         app.listen(port, () => console.log(`Server Online at port ${port} 🚀`));
 

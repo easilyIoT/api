@@ -20,6 +20,7 @@ export const getAllDevices = async (req: Request, res: Response) => {
                         error: true,
                         message: e.message
                 });
+                console.error(e.stack);
         }
 }      
 
@@ -53,29 +54,39 @@ export const createDevice = async (req: Request, res: Response) => {
                                 message: "Name already exists"
                         })
                 
-                
                 const deviceTypeDatos = deviceData.get(type);
 
                 if (!deviceTypeDatos)
                         return res.status(400).json({
                                 error: true,
-                                messagge: "Device Type not found"
+                                message: "Device Type not found"
                         })
                 
-                deviceTypeDatos.reads.forEach(read => req.mqtt.subscribe(`/${device._id}/${read}`));
+                        
+                const device: Device = new DeviceModel({
+                        name,
+                        type,
+                        owner: user._id,
+                        actions: deviceTypeDatos.actions,
+                        reads: deviceTypeDatos.reads,
+                        state: "none",
+                        isOnline: false
+                });
                 
-                const device: Device = new DeviceModel({ name, type, owner: user._id, actions: deviceTypeDatos.actions, reads: deviceTypeDatos.reads, status: "none" });
+                deviceTypeDatos.reads.forEach(read => req.mqtt.subscribe(`/${device._id}/${read}`));
 
                 await device.save();
 
 
-                res.status(201).json();
+                res.status(201).json({});
 
         } catch (e) {
                 res.status(500).json({
                         error: true,
-                        messagge: e.message
+                        message: e.message
                 })
+
+                console.error(e.stack)
         }
 }
 
@@ -115,6 +126,8 @@ export const getDevice = async (req: Request, res: Response) => {
                         error: true,
                         message: e.message
                 })
+
+                console.error(e.stack);
         }
 };
 
@@ -153,7 +166,7 @@ export const deleteDevice = async (req: Request, res: Response) => {
                 if (!deviceTypeDatos)
                         return res.status(500).json({
                                 error: true,
-                                messagge: "Device Type not found"
+                                message: "Device Type not found"
                         })
                 
                 deviceTypeDatos.reads.forEach(read => req.mqtt.unsubscribe(`/${device._id}/${read}`));
@@ -165,6 +178,7 @@ export const deleteDevice = async (req: Request, res: Response) => {
                         error: true,
                         message: e.message
                 })
+                console.error(e.stack);
         }
 };
 
@@ -183,6 +197,7 @@ export const getTypes = async (req: Request, res: Response) => {
                         error: true,
                         message: e
                 })
+                console.error(e.stack);
         }
 };
 
@@ -216,7 +231,7 @@ export const triggerAction = async (req: Request, res: Response) => {
                 if (!deviceData.get(device.type)?.actions.includes(actionName))
                         return res.status(400).json({
                                 error: true,
-                                messagge: "Actions not supported from this device type"
+                                message: "Actions not supported from this device type"
                         });
 
                 
@@ -234,6 +249,7 @@ export const triggerAction = async (req: Request, res: Response) => {
                         error: true,
                         message: e.message
                 })
+                console.error(e.stack);
         }
 }
 

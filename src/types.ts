@@ -1,8 +1,10 @@
+
 import express, { Request, Express, Response, NextFunction } from "express"
 import { Document } from "mongoose"
 import { MqttClient } from 'mqtt';
 import passport from 'passport';
 
+import { HealthStatus } from "./mqtt"
 
 export interface Code extends Document {
         client: string,
@@ -38,14 +40,17 @@ export interface Device extends Document {
         owner: string,
         actions: DeviceAction,
         reads: DeviceRead
-        state: string
+        state: string,
+        isOnline: boolean
 }
 
+type Timer = NodeJS.Timeout;
 
 declare global {
         namespace Express {
                 interface Request {
                         mqtt: MqttClient,
+                        deviceHealth: Map<string, HealthStatus>
                 }
         }
         namespace NodeJS {

@@ -30,6 +30,10 @@ const deviceSchema = new Schema({
         state: {
                 type: String,
                 required: true
+        },
+        isOnline: {
+                type: Boolean,
+                required: true
         }
 });
 

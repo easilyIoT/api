@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { MqttClient } from 'mqtt';
 
+import { HealthStatus } from "../mqtt";
 
 export const headerLogger = (req: Request, res: Response, next: NextFunction) => {
         console.log(req.headers),
@@ -44,3 +45,8 @@ export const injectMQTT = (client: MqttClient) => (req: Request, res: Response, 
         req.mqtt = client;
         next();
 };
+
+export const injectDeviceHealth = (deviceHealth: Map<string, HealthStatus>) => (req: Request, res: Response, next: NextFunction) => {
+        req.deviceHealth = deviceHealth;
+        next();
+}

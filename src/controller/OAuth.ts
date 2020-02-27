@@ -92,7 +92,7 @@ export const refresh_token_grant = async (req: Request, res: Response, next: Nex
         if (!refresh_token_id)
                 return res.send(400).json({
                         error: true,
-                        messagge: "refresh_token not found"
+                        message: "refresh_token not found"
                 });
 
         try {
@@ -101,7 +101,7 @@ export const refresh_token_grant = async (req: Request, res: Response, next: Nex
                 if (!refresh_token)
                         res.send(400).json({
                                 error: true,
-                                messagge: "refresh_token not found"
+                                message: "refresh_token not found"
                         });
                 else {
                         const user = await UserModel.findById(refresh_token.user);
@@ -109,7 +109,7 @@ export const refresh_token_grant = async (req: Request, res: Response, next: Nex
                         if (!user) 
                                 res.send(400).json({
                                         error: true,
-                                        messagge: "user not found"
+                                        message: "user not found"
                                 })
                         else 
                                 res.status(200).json({
@@ -122,7 +122,7 @@ export const refresh_token_grant = async (req: Request, res: Response, next: Nex
         } catch (e) {
                 return res.send(500).json({
                         error: true,
-                        messagge: e.messagge
+                        message: e.message
                 });
         }
 };

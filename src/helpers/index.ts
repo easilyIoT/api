@@ -20,3 +20,15 @@ export const toHexString = (byteArray: any) => {
                 return ('0' + (byte & 0xFF).toString(16)).slice(-2);
         }).join('');
 };
+
+export const getKeysOfMap = function <T>(map: Map<T, any>): T[] {
+        let res: T[] = [];
+
+        const keys = map.keys();
+        let type: IteratorResult<T, T>;
+
+        while (!(type = keys.next()).done)
+                res.push(type.value);
+        
+        return res;
+}

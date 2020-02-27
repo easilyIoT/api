@@ -18,8 +18,28 @@ const devicesData = new Map<DeviceType, DeviceDataStorage>([
 
 export default devicesData;
 
-export const isRead = (toBeValidated: DeviceRead): boolean => {
+const isReadType = (toBeValidated: string): toBeValidated is DeviceRead => {
+        const casted = toBeValidated as DeviceRead;
+        
+        if (casted === "health" || casted === "temperature")
+                return true;
+        else return false;
+};
+
+const isActionType = (toBeValidated: string): toBeValidated is DeviceAction => {
+        const casted = toBeValidated as DeviceAction;
+        
+        if (casted === "lock" || casted === "unlock")
+                return true;
+        else return false;
+};
+
+export const isRead = (toBeValidated: string): boolean => {
         let res = false;
+        
+        if (!isReadType(toBeValidated))
+                return false;
+        
         
         const values = devicesData.values();
         let dato: IteratorResult<DeviceDataStorage, DeviceDataStorage>;
@@ -28,12 +48,15 @@ export const isRead = (toBeValidated: DeviceRead): boolean => {
                 if (dato.value.reads.includes(toBeValidated))
                         res = true
         
-
         return res;
 }
 
-export const isAction = (toBeValidated: DeviceAction): boolean => {
+export const isAction = (toBeValidated: string): boolean => {
         let res = false;
+        
+        if (!isActionType(toBeValidated))
+                return false;
+        
         
         const values = devicesData.values();
         let dato: IteratorResult<DeviceDataStorage, DeviceDataStorage>;
