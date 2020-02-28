@@ -31,7 +31,7 @@ export interface RefreshToken extends Document {
 
 export type DeviceType = "LockController" | "TemperatureSensor" | "ThermostatController" | "PowerController";
 
-export type DeviceAction = "lock" | "unlock" | "turnON" | "turnOFF";
+export type DeviceAction = "lock" | "unlock" | "turnON" | "turnOFF" | "setTemperature";
 export type DeviceRead = "health" | "temperature";
 export type DeviceCategory =
         "ACTIVITY_TRIGGER"

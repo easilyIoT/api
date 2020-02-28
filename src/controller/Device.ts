@@ -240,7 +240,7 @@ export const triggerAction = async (req: Request, res: Response) => {
 
                 
                 req.mqtt.publish(`/${device._id}/${actionName}`, "1");
-                
+
                 // Soluzione temporanea ⚠
                 switch (device.type) {
                         case "LockController":
