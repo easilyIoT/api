@@ -37,7 +37,7 @@ export const isReadType = (toBeValidated: string): toBeValidated is DeviceRead =
 export const isActionType = (toBeValidated: string): toBeValidated is DeviceAction => {
         const casted = toBeValidated as DeviceAction;
         
-        if (casted === "lock" || casted === "unlock")
+        if (casted === "lock" || casted === "unlock" || casted === "setTemperature")
                 return true;
         else return false;
 };
