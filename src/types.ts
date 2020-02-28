@@ -29,9 +29,9 @@ export interface RefreshToken extends Document {
         user: string
 }
 
-export type DeviceType = "LockController" | "TemperatureSensor";
+export type DeviceType = "LockController" | "TemperatureSensor" | "ThermostatController";
 
-export type DeviceAction = "lock" | "unlock";
+export type DeviceAction = "lock" | "unlock" | "setTemperature";
 export type DeviceRead = "health" | "temperature";
 export type DeviceCategory = "SMARTLOCK" | "THERMOSTAT" | "TEMPERATURE_SENSOR";
  
@@ -46,7 +46,6 @@ export interface Device extends Document {
         isOnline: boolean
 }
 
-type Timer = NodeJS.Timeout;
 
 declare global {
         namespace Express {
