@@ -9,8 +9,8 @@ export const headerLogger = (req: Request, res: Response, next: NextFunction) =>
 };
 
 export const bodyLogger = (req: Request, res: Response, next: NextFunction) => {
-        console.log("Body of", req.path, "=>", req.body),
-                next();
+        (req.body ? console.log("Body of", req.path, "=>", req.body) : false);
+        next();
 };
 
 export const responseLogger = (req: Request, res: Response, next: NextFunction) => {

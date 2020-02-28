@@ -5,6 +5,7 @@ import { HealthStatus } from "../mqtt"
 import deviceData, { isRead, isAction, getImplementedTypes } from "../devices";
 
 import { Device, User, DeviceType, DeviceAction } from '../types';
+import { isFloat } from '../helpers/index';
 
 export const getAllDevices = async (req: Request, res: Response) => {
         const user: User = req.user as User;
@@ -238,17 +239,34 @@ export const triggerAction = async (req: Request, res: Response) => {
                                 message: "Actions not supported from this device type"
                         });
 
-                
-                req.mqtt.publish(`/${device._id}/${actionName}`, "1");
 
                 // Soluzione temporanea ⚠
                 switch (device.type) {
                         case "LockController":
                                 device.state = actionName + "ed";
+                                req.mqtt.publish(`/${device._id}/${actionName}`, "1");
                                 
                                 break;
                         case "PowerController":
                                 device.state = actionName === "turnOFF" ? "OFF" : "ON";
+                                
+                                break;
+                        case "ThermostatController":
+                                const newTemperature: string = req.body.temperature;
+
+                                if (!newTemperature) 
+                                        return res.status(400).json({
+                                                error: true,
+                                                message: "newTemperature not found in body"
+                                        })
+                                
+                                if (!isFloat(newTemperature))
+                                        return res.status(400).json({
+                                                error: true,
+                                                message: "newTemperature is not a float"
+                                        })
+                                
+                                device.state = newTemperature;
                                 
                                 break;
                         default:

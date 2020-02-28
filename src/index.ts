@@ -32,8 +32,8 @@ const main = async () => {
 
                 app.use(injectMQTT(client));
                 app.use(injectDeviceHealth(devices));
-                
-                console.log("✅  MQTT initialized");
+
+                console.log("✅  MQTT initialization completed");
 
         } catch (e) {
                 console.error("⛔  Failed connection with MQTT Broker");

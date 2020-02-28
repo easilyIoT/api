@@ -24,6 +24,7 @@ app.use(cors({
         origin: true
 }));
 
+app.use(Middlewares.bodyLogger);
 app.use(Middlewares.responseLogger);
 app.use(routes);
 
