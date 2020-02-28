@@ -29,11 +29,45 @@ export interface RefreshToken extends Document {
         user: string
 }
 
-export type DeviceType = "LockController" | "TemperatureSensor" | "ThermostatController";
+export type DeviceType = "LockController" | "TemperatureSensor" | "ThermostatController" | "PowerController";
 
-export type DeviceAction = "lock" | "unlock" | "setTemperature";
+export type DeviceAction = "lock" | "unlock" | "turnON" | "turnOFF";
 export type DeviceRead = "health" | "temperature";
-export type DeviceCategory = "SMARTLOCK" | "THERMOSTAT" | "TEMPERATURE_SENSOR";
+export type DeviceCategory =
+        "ACTIVITY_TRIGGER"
+        | "CAMERA"
+        | "COMPUTER"
+        | "CONTACT_SENSOR"
+        | "DOOR"
+        | "DOORBELL"
+        | "EXTERIOR_BLIND"
+        | "FAN"
+        | "GAME_CONSOLE"
+        | "GARAGE_DOOR"
+        | "INTERIOR_BLIND"
+        | "LAPTOP"
+        | "LIGHT"
+        | "MICROWAVE"
+        | "MOBILE_PHONE"
+        | "MOTION_SENSOR"
+        | "MUSIC_SYSTEM"
+        | "NETWORK_HARDWARE"
+        | "OTHER"
+        | "OVEN"
+        | "PHONE"
+        | "SCENE_TRIGGER"
+        | "SCREEN"
+        | "SECURITY_PANEL"
+        | "SMARTLOCK"
+        | "SMARTPLUG"
+        | "SPEAKER"
+        | "STREAMING_DEVICE"
+        | "SWITCH"
+        | "TABLET"
+        | "THERMOSTAT"
+        | "TEMPERATURE_SENSOR"
+        | "TV"
+        | "WEARABLE";
  
 export interface Device extends Document {
         type: DeviceType,

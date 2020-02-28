@@ -242,7 +242,18 @@ export const triggerAction = async (req: Request, res: Response) => {
                 req.mqtt.publish(`/${device._id}/${actionName}`, "1");
                 
                 // Soluzione temporanea ⚠
-                device.state = actionName + "ed";
+                switch (device.type) {
+                        case "LockController":
+                                device.state = actionName + "ed";
+                                
+                                break;
+                        case "PowerController":
+                                device.state = actionName === "turnOFF" ? "OFF" : "ON";
+                                
+                                break;
+                        default:
+                                break;
+                }
 
                 await device.save();
                 

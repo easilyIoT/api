@@ -18,9 +18,14 @@ const devicesData = new Map<DeviceType, DeviceDataStorage>([
                 category: ["TEMPERATURE_SENSOR"]
         }],
         ["ThermostatController", {
-                actions: ["setTemperature"],
+                actions: [],
                 reads: ["health"],
                 category: ["THERMOSTAT"]
+        }],
+        ["PowerController", {
+                actions: ["turnON", "turnOFF"],
+                reads: ["health"],
+                category: ["SWITCH"]
         }]
 ]);
 
@@ -37,7 +42,7 @@ export const isReadType = (toBeValidated: string): toBeValidated is DeviceRead =
 export const isActionType = (toBeValidated: string): toBeValidated is DeviceAction => {
         const casted = toBeValidated as DeviceAction;
         
-        if (casted === "lock" || casted === "unlock" || casted === "setTemperature")
+        if (casted === "lock" || casted === "unlock" || casted === "turnON" || casted === "turnOFF")
                 return true;
         else return false;
 };
