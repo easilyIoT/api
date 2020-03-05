@@ -29,8 +29,8 @@ export const createDevice = async (req: Request, res: Response) => {
         
         const user: User = req.user as User;
         
-        const type: DeviceType = req.body.type;
-        const name: string = req.body.name;
+        const type: DeviceType | undefined = req.body.type;
+        const name: string | undefined = req.body.name;
 
         if (!type) 
                 return res.status(400).json({
@@ -97,10 +97,10 @@ export const getDevice = async (req: Request, res: Response) => {
         const deviceID: string = req.params.id;
         const user: User = req.user as User;
 
-        if (!deviceID || deviceID === undefined)
+        if (!deviceID)
                 return res.status(400).json({
                         error: true,
-                        message: "deviceID is missing"
+                        message: "the id of device is missing"
                 })
         
         try {
@@ -111,13 +111,13 @@ export const getDevice = async (req: Request, res: Response) => {
                         return res.status(400).json({
                                 error: true,
                                 message: "Device not found"
-                        })
+                        });
                 
-                if (device.owner === user._id)
+                if (device.owner !== user._id)
                         return res.status(401).json({
                                 error: true,
-                                message: "User dont own the device"
-                        })
+                                message: "User is not the owner of Device"
+                        });
                 
                 
                 res.status(200).json({
@@ -128,7 +128,7 @@ export const getDevice = async (req: Request, res: Response) => {
                 res.status(500).json({
                         error: true,
                         message: e.message
-                })
+                });
 
                 console.error(e.stack);
         }
@@ -136,7 +136,7 @@ export const getDevice = async (req: Request, res: Response) => {
 
 export const deleteDevice = async (req: Request, res: Response) => {
         const deviceID: string = req.params.id;
-        const user: User = req.body as User;
+        const user: User = req.user as User;
 
 
         if (!deviceID || deviceID === undefined)
@@ -156,10 +156,11 @@ export const deleteDevice = async (req: Request, res: Response) => {
                                 message: "Device not found"
                         })
                 
-                if (device.owner === user._id)
+                
+                if (device.owner !== String(user._id))
                         return res.status(401).json({
                                 error: true,
-                                message: "User dont own the device"
+                                message: "User is not the owner of Device"
                         })
                 
                 await device.remove();

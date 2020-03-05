@@ -1,6 +1,8 @@
 import { sign } from "jsonwebtoken"
 
-import { User } from '../types';
+import DeviceModel from "../models/device"
+
+import { User, Device } from '../types';
 
 
 export const signToken = (user: User, expires_in: number = 0): string => {
@@ -29,8 +31,14 @@ export const getKeysOfMap = function <T>(map: Map<T, any>): T[] {
 
         while (!(type = keys.next()).done)
                 res.push(type.value);
-        
+
         return res;
 }
 
-export const isFloat = (value: string): boolean => !isNaN(parseFloat(value))
+export const isFloat = (value: string): boolean => !isNaN(parseFloat(value));
+
+export const getDevices = async (devices: string[]): Promise<Device[]> => {
+        return (await Promise.all(
+                devices.map(async id => await DeviceModel.findById(id))
+        )).filter(nullableDevice => nullableDevice) as Device[];
+}

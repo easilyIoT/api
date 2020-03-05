@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 //(process.env.NODE_ENV === "DEV" ? app.use(morgan("dev")) : null);
 app.use(cors({
-        methods: "GET,POST,DELETE,OPTIONS",
+        methods: "GET,POST,DELETE,OPTIONS,PUT",
         credentials: true,
         origin: true
 }));

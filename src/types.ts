@@ -25,6 +25,32 @@ export interface User extends Document {
         isValidPassword: (this: User, newPassword: string) => Promise<Boolean>
 }
 
+export interface Device extends Document {
+        type: DeviceType,
+        name: string,
+        owner: string,
+        actions: DeviceAction[],
+        reads: DeviceRead[],
+        categories: DeviceCategory[],
+        state: string,
+        isOnline: boolean
+}
+
+export interface Group extends Document {
+        name: string,
+        description: string,
+        owner: string,
+        devices: string[]
+}
+
+export interface GroupWithDevices {
+        name: string,
+        description: string,
+        owner: string,
+        devices: Device[],
+        _id: string
+}
+
 export interface RefreshToken extends Document {
         user: string
 }
@@ -69,16 +95,7 @@ export type DeviceCategory =
         | "TV"
         | "WEARABLE";
  
-export interface Device extends Document {
-        type: DeviceType,
-        name: string,
-        owner: string,
-        actions: DeviceAction[],
-        reads: DeviceRead[],
-        categories: DeviceCategory[],
-        state: string,
-        isOnline: boolean
-}
+
 
 
 declare global {
