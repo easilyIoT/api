@@ -241,7 +241,6 @@ export const triggerAction = async (req: Request, res: Response) => {
                         });
 
 
-                // Soluzione temporanea ⚠
                 switch (device.type) {
                         case "LockController":
                                 device.state = actionName + "ed";
