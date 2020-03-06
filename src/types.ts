@@ -40,7 +40,8 @@ export interface Group extends Document {
         name: string,
         description: string,
         owner: string,
-        devices: string[]
+        devices: string[],
+        categories: DeviceCategory[]
 }
 
 export interface GroupWithDevices {
@@ -48,6 +49,7 @@ export interface GroupWithDevices {
         description: string,
         owner: string,
         devices: Device[],
+        categories: DeviceCategory[]
         _id: string
 }
 

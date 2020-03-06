@@ -19,6 +19,10 @@ const groupSchema = new Schema({
         devices: {
                 type: [String],
                 required: true
+        },
+        categories: {
+                type: [String],
+                required: true
         }
 })
 

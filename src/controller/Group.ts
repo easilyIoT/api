@@ -14,15 +14,17 @@ export const getAllGroups = async (req: Request, res: Response) => {
 
         try {
                 const groups: Group[] = await GroupModel.find({ owner: user._id });
-                const withDevices = await Promise.all(groups.map(async (group) => {
+
+                const withDevices = await Promise.all(groups.map(async group => {
                         const groupWithDevices: GroupWithDevices = {
                                 name: group.name,
                                 description: group.description,
                                 owner: group.owner,
                                 _id: group._id,
-                                devices: await getDevices(group.devices as string[])
+                                devices: await getDevices(group.devices as string[]),
+                                categories: group.categories
                         };
-                        console.log(group)
+
                         return groupWithDevices;
                 }));
 
@@ -44,19 +46,24 @@ export const createGroup = async (req: Request, res: Response) => {
         const name: string | undefined = req.body.name;
         const description: string | undefined = req.body.description;
         const devices: string[] = !req.body.devices ? [] : req.body.devices;
+        const categories: string[] | undefined = req.body.categories;
 
         if (!name)
                 return res.status(400).json({
                         error: true,
                         message: "Name field not found"
-                })
+                });
 
         if (!description)
                 return res.status(400).json({
-                        erorr: true,
+                        error: true,
                         message: "Description field not found"
-                })
-
+                });
+        if (!categories)
+                return res.status(400).json({
+                        error: true,
+                        message: "Categories field not found"
+                });
         try {
                 const nameAlreadyExists: Group | null = await GroupModel.findOne({ name });
 
@@ -64,13 +71,14 @@ export const createGroup = async (req: Request, res: Response) => {
                         return res.status(400).json({
                                 error: true,
                                 message: "Name already exists"
-                        })
+                        });
 
                 const group: Group = new GroupModel({
                         name,
                         description,
                         owner: user._id,
-                        devices
+                        devices,
+                        categories
                 });
 
                 await group.save();
@@ -115,9 +123,11 @@ export const getGroup = async (req: Request, res: Response) => {
                         description: group.description,
                         owner: group.owner,
                         _id: group._id,
-                        devices: await getDevices(group.devices as string[])
+                        devices: await getDevices(group.devices as string[]),
+                        categories: group.categories
                 };
                 
+
                 res.status(200).json({
                         group: groupWithDevices
                 });

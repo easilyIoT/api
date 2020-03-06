@@ -34,17 +34,13 @@ export default devicesData;
 export const isReadType = (toBeValidated: string): toBeValidated is DeviceRead => {
         const casted = toBeValidated as DeviceRead;
         
-        if (casted === "health" || casted === "temperature")
-                return true;
-        else return false;
+        return casted === "health" || casted === "temperature"
 };
 
 export const isActionType = (toBeValidated: string): toBeValidated is DeviceAction => {
         const casted = toBeValidated as DeviceAction;
         
-        if (casted === "lock" || casted === "unlock" || casted === "turnON" || casted === "turnOFF" || casted === "setTemperature")
-                return true;
-        else return false;
+        return casted === "lock" || casted === "unlock" || casted === "turnON" || casted === "turnOFF" || casted === "setTemperature";
 };
 
 export const isRead = (toBeValidated: string): boolean => {
