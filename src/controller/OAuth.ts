@@ -18,7 +18,7 @@ export const auth = (req: Request, res: Response) => {
         console.log(req.query);
 
         res.redirect(url.format({
-                pathname: "https://frontend.arcanediver.now.sh/authorize",
+                pathname: "https://iot.arcanediver.now.sh/authorize",
                 query: { ...req.query },
         }));
 };
