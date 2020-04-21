@@ -248,8 +248,9 @@ export const triggerAction = async (req: Request, res: Response) => {
                                 
                                 break;
                         case "PowerController":
-                                device.state = actionName === "turnOFF" ? "OFF" : "ON";
-                                
+                                device.state = actionName === "turnON" ? "ON" : "OFF";
+                                req.mqtt.publish(`/${device._id}/${actionName}`, "");
+
                                 break;
                         case "ThermostatController":
                                 const newTemperature: string = req.body.temperature;
@@ -267,6 +268,7 @@ export const triggerAction = async (req: Request, res: Response) => {
                                         })
                                 
                                 device.state = newTemperature;
+                                req.mqtt.publish(`/${device._id}/${actionName}`, JSON.stringify({ temperature: newTemperature }));
                                 
                                 break;
                         default:
